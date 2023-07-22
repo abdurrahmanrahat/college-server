@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://collegeUser:y3CdzjbJQnEOgPk0@cluster0.mjja2r0.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -40,6 +40,14 @@ async function run() {
     app.get("/colleges", async (req, res) => {
       const result = await collegeCollection.find().toArray();
       res.send(result);
+    });
+
+    // get specific college data
+    app.get('/colleges/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const college = await collegeCollection.findOne(query);
+      res.send(college);
     });
 
     // Send a ping to confirm a successful connection
