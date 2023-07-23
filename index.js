@@ -31,6 +31,7 @@ async function run() {
     -----------------------*/
 
     const collegeCollection = client.db("collegeDB").collection("colleges");
+    const studentCollection = client.db("collegeDB").collection("students");
 
     /*--------------------------
        colleges collection apis
@@ -43,11 +44,29 @@ async function run() {
     });
 
     // get specific college data
-    app.get('/colleges/:id', async (req, res) => {
+    app.get("/colleges/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const college = await collegeCollection.findOne(query);
       res.send(college);
+    });
+
+    /*--------------------------
+       students collection apis
+    ----------------------------*/
+
+    // post users to db
+    app.post("/students", async (req, res) => {
+      const userInfo = req.body;
+
+      // const query = { email: userInfo.email };
+      // const existingStudent = await studentCollection.findOne(query);
+      // if (existingStudent) {
+      //   return res.send({ message: "Student already admitted" });
+      // }
+
+      const result = await studentCollection.insertOne(userInfo);
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
