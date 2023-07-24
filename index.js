@@ -32,6 +32,7 @@ async function run() {
 
     const collegeCollection = client.db("collegeDB").collection("colleges");
     const studentCollection = client.db("collegeDB").collection("students");
+    const reviewCollection = client.db("collegeDB").collection("reviews");
 
     /*--------------------------
        colleges collection apis
@@ -66,6 +67,17 @@ async function run() {
       // }
 
       const result = await studentCollection.insertOne(userInfo);
+      res.send(result);
+    });
+
+    /*--------------------------
+       reviews collection apis
+    ----------------------------*/
+
+    // post review to db
+    app.post("/reviews", async (req, res) => {
+      const testimonial = req.body;
+      const result = await reviewCollection.insertOne(testimonial);
       res.send(result);
     });
 
