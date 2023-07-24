@@ -40,7 +40,10 @@ async function run() {
 
     // get all colleges data
     app.get("/colleges", async (req, res) => {
-      const result = await collegeCollection.find().toArray();
+      const search = req.query.search;
+      // console.log(search);
+      const query = { collegeName: { $regex: search, $options: "i" } };
+      const result = await collegeCollection.find(query).toArray();
       res.send(result);
     });
 
