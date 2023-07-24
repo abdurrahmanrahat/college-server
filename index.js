@@ -74,6 +74,12 @@ async function run() {
        reviews collection apis
     ----------------------------*/
 
+    // get review from db
+    app.get("/reviews", async (req, res) => {
+      const result = await reviewCollection.find().toArray();
+      res.send(result);
+    });
+
     // post review to db
     app.post("/reviews", async (req, res) => {
       const testimonial = req.body;
